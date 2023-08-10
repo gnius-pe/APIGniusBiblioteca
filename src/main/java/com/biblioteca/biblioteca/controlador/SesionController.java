@@ -2,7 +2,10 @@ package com.biblioteca.biblioteca.controlador;
 
 import com.biblioteca.biblioteca.modelo.usuario.Usuario;
 import com.biblioteca.biblioteca.servicio.SesionServicio;
+import com.biblioteca.biblioteca.utilidades.ProblemaDetalle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +26,16 @@ public class SesionController {
     }
 
     @GetMapping("/login/{correo}")
-    public Usuario loginUsuario(@PathVariable String correo){
-        return sesionServicio.loginUsuario(correo);
+    public ResponseEntity<?> loginUsuario(@PathVariable String correo){
+        Usuario usuario = sesionServicio.loginUsuario(correo);
+        if(usuario != null){
+            return ResponseEntity.ok(usuario);
+        }else{
+            int statusCode = HttpStatus.NOT_FOUND.value();
+            String mensajeTitulo = "El correo no fue encontrado";
+            String  mensajeDetalle = "El correo de '" + correo + "' no fue encontrado";
+            ProblemaDetalle problemaDetalle =  new ProblemaDetalle(statusCode,mensajeTitulo,mensajeDetalle);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemaDetalle);
+        }
     }
 }
