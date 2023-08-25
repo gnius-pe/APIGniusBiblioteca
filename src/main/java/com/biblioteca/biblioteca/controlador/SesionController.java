@@ -22,7 +22,7 @@ public class SesionController {
         return  sesionServicio.getALlUsuario();
     }
 
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
+    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501"})
     @GetMapping("/login/{correo}")
     public ResponseEntity<?> loginUsuario(@PathVariable String correo){
         Usuario usuario = sesionServicio.loginUsuario(correo);
