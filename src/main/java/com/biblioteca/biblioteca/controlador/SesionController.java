@@ -1,5 +1,6 @@
 package com.biblioteca.biblioteca.controlador;
 
+import com.biblioteca.biblioteca.DTO.UsuarioDTO;
 import com.biblioteca.biblioteca.modelo.usuario.Usuario;
 import com.biblioteca.biblioteca.servicio.SesionServicio;
 import com.biblioteca.biblioteca.utilidades.ProblemaDetalle;
@@ -35,5 +36,11 @@ public class SesionController {
             ProblemaDetalle problemaDetalle =  new ProblemaDetalle(statusCode,mensajeTitulo,mensajeDetalle);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemaDetalle);
         }
+    }
+    @GetMapping("/login-beta/{correo}")
+    public ResponseEntity<UsuarioDTO> loginBeta(@PathVariable String correo){
+        Usuario usuario = sesionServicio.loginBeta(correo);
+        UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getIdUsuario(),usuario.getCorreo(), usuario.getPasswordUsuario());
+        return ResponseEntity.ok(usuarioDTO);
     }
 }

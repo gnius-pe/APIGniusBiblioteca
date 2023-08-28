@@ -1,6 +1,7 @@
 package com.biblioteca.biblioteca.servicio;
 
 
+import com.biblioteca.biblioteca.DTO.UsuarioDTO;
 import com.biblioteca.biblioteca.modelo.usuario.Usuario;
 import com.biblioteca.biblioteca.repositorio.SesionRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class SesionServicio{
     }
 
     public Usuario loginUsuario(String correo){
+        return sesionRepositorio.loginUsuario(correo);
+    }
+
+    public Usuario loginBeta(String correo){
         return sesionRepositorio.loginUsuario(correo);
     }
 }
