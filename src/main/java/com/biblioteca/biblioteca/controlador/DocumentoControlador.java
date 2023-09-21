@@ -21,8 +21,4 @@ public class DocumentoControlador {
         return docuemntoServicio.getTodoDocumento();
     }
 
-    @GetMapping("/test")
-    public String funciona(){
-        return "holaaa";
-    }
 }
