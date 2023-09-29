@@ -31,11 +31,12 @@ public class SesionController {
     }
 
     @Operation(summary = "Obtener",description = "Retorna detalles del usuario", responses = {
-            @ApiResponse(responseCode = "200", description = "Operacion exitosa", content = @Content( schema = @Schema(implementation = Message.class)))
+            @ApiResponse(responseCode = "200", description = "Operacion exitosa", content = @Content( schema = @Schema(implementation = Usuario.class)))
     })
-    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200"})
+    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502"})
     @GetMapping("/login/{correo}")
     public ResponseEntity<?> loginUsuario(@PathVariable String correo){
+        System.out.println(correo);
         Usuario usuario = sesionServicio.loginUsuario(correo);
         if(usuario != null){
             return ResponseEntity.ok(usuario);
