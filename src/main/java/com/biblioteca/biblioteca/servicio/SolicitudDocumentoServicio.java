@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SolicitudDocumentoServicio {
@@ -17,8 +18,12 @@ public class SolicitudDocumentoServicio {
     }
 
     @Transactional
-    public SolicitudDocumentoDTO reservarDocumeto(SolicitudDocumentoDTO solicitudDocumentoDTO){
+    public SolicitudDocumentoDTO guardarDocumento(SolicitudDocumentoDTO solicitudDocumentoDTO){
         System.out.println(solicitudDocumentoDTO.toString());
         return solicitudDocumentoRepositorio.save(solicitudDocumentoDTO);
+    }
+
+    public Optional<SolicitudDocumentoDTO> busquedaSolicitudPorID(Long id){
+        return solicitudDocumentoRepositorio.findById(id);
     }
 }
