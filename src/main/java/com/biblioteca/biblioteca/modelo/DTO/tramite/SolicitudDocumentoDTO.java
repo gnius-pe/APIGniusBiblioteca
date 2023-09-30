@@ -44,6 +44,7 @@ public class SolicitudDocumentoDTO{
         this.idDocumento = idDocumento;
     }
 
+
     @Override
     public String toString() {
         return "Solicitud{" +
