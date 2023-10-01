@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,6 +78,20 @@ public class DocumentoControlador {
             return ResponseEntity.ok("Estado de documento actualizado");
         }else{
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "nuevo documento",description = "se agregara un nuevo docuemnto de cualquier tipo",responses = {
+            @ApiResponse(responseCode = "200",description = "Operacion exitosa", content = @Content(schema = @Schema(implementation = Documento.class)))
+    })
+    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502"})
+    @PostMapping("/agregar")
+    public ResponseEntity<String> agregarDocuemnto(@RequestBody Documento documento){
+        try {
+            Documento nuevoDocumento = docuemntoServicio.agregarDocumento(documento);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Documento agregado cone xito. ID" + nuevoDocumento.getIdDocumento());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error alñ agregar documento" + e.getMessage());
         }
     }
 }
