@@ -3,6 +3,7 @@ package com.biblioteca.biblioteca.controlador;
 import com.biblioteca.biblioteca.modelo.DTO.estudianteUNAS.CredencialUsuario;
 import com.biblioteca.biblioteca.modelo.DTO.estudianteUNAS.Estudiante;
 import com.biblioteca.biblioteca.modelo.DTO.estudianteUNAS.RegistroEstudiante;
+import com.biblioteca.biblioteca.modelo.DTO.responseMs.RespuestaDTO;
 import com.biblioteca.biblioteca.modelo.usuario.Usuario;
 import com.biblioteca.biblioteca.modelo.usuario.UsuarioBiblioteca;
 import com.biblioteca.biblioteca.servicio.SesionServicio;
@@ -57,7 +58,7 @@ public class SesionController {
             @ApiResponse(responseCode = "200", description = "Operacion exitosa", content = @Content( schema = @Schema(implementation = RegistroEstudiante.class)))
     })
     @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502","https://biblioteca-unas.netlify.app"})
-    @GetMapping("/valida/{codigo}")
+    @GetMapping("/valida/   {codigo}")
     public ResponseEntity<?> validarEstudiante(@PathVariable String codigo){
         System.out.println("codgo : " + codigo);
         if(!sesionServicio.validaUsuarioBiblioteca(codigo)){
@@ -98,9 +99,9 @@ public class SesionController {
     })
     @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502","https://biblioteca-unas.netlify.app"})
     @PostMapping("/registra")
-    public ResponseEntity<?> guardarEstudiante(@RequestBody RegistroEstudiante registroEstudiante){
-        try {
-            ConeccionAPIXML coneccionAPIXML = new ConeccionAPIXML();
+    public ResponseEntity<RespuestaDTO> guardarEstudiante(@RequestBody RegistroEstudiante registroEstudiante){
+        ConeccionAPIXML coneccionAPIXML = new ConeccionAPIXML();
+        if(!sesionServicio.validaUsuarioBiblioteca(registroEstudiante.getCodigo() )&& coneccionAPIXML.existEstudianteUnas(registroEstudiante.getCodigo()) == true ){
             Estudiante estudiante = coneccionAPIXML.obtenerAlumno(registroEstudiante.getCodigo());
             UsuarioBiblioteca usuarioBiblioteca = sesionServicio.guardarDetallesUsuario(
                     new UsuarioBiblioteca(
@@ -123,15 +124,9 @@ public class SesionController {
                             usuarioBiblioteca.getIdUsuarioBiblioteca().intValue()
                     ));
 
-            return ResponseEntity.ok("Registro completado exitosamente");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ProblemaDetalle(
-                            HttpStatus.NOT_FOUND.value(),
-                            "Error con los datos ingresados",
-                            "Verifica que los tados esten correctamente"
-                    )
-            );
+            return ResponseEntity.status(HttpStatus.CREATED).body(new RespuestaDTO("Estudiante creado exitosamente"));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RespuestaDTO("Estudiante no cerado"));
         }
     }
 
