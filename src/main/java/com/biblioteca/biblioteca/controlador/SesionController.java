@@ -58,7 +58,7 @@ public class SesionController {
     })
     @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502","https://biblioteca-unas.netlify.app"})
     @GetMapping("/valida")
-    public ResponseEntity<?> validarEstudiante(@RequestBody CredencialUsuario credencialUsuario){
+    public ResponseEntity<?> validarEstudiante(@PathVariable CredencialUsuario credencialUsuario){
         System.out.println("codgo : " + credencialUsuario.toString());
         if(!sesionServicio.validaUsuarioBiblioteca(credencialUsuario.getCodigo())){
             ConeccionAPIXML coneccionAPIXML = new ConeccionAPIXML();
