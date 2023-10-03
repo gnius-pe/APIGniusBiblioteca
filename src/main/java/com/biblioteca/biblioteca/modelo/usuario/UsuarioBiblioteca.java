@@ -40,6 +40,22 @@ public class UsuarioBiblioteca {
     @Column(name = "descripcion")
     private String descripcion;
 
+    public UsuarioBiblioteca(){
+
+    }
+
+    public UsuarioBiblioteca( String nombre, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento, String codigo, String numeroCelular, String urlFotoPerfil, String descripcion) {
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.fechaNacimiento = fechaNacimiento;
+        this.codigo = codigo;
+        this.numeroCelular = numeroCelular;
+        this.urlFotoPerfil = urlFotoPerfil;
+        this.descripcion = descripcion;
+    }
+
+
     // Getters and setters
 
     public Long getIdUsuarioBiblioteca() {

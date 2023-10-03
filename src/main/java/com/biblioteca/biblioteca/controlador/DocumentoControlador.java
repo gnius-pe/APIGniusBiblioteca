@@ -1,6 +1,6 @@
 package com.biblioteca.biblioteca.controlador;
 
-import com.biblioteca.biblioteca.modelo.DTO.tramite.EstadoRequest;
+import com.biblioteca.biblioteca.modelo.DTO.solicitudes.EstadoRequest;
 import com.biblioteca.biblioteca.modelo.DTO.tramite.SolicitudDocumentoDTO;
 import com.biblioteca.biblioteca.modelo.Documento;
 import com.biblioteca.biblioteca.servicio.DocuemntoServicio;
@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

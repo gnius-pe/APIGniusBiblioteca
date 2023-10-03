@@ -33,6 +33,17 @@ public class Usuario {
 
     // Getters and setters
 
+    public Usuario(){
+
+    }
+
+    public Usuario( String nombreUsuario, String passwordUsuario, String correo, String rolUsuario, Integer idUsuarioBiblioteca) {
+        this.nombreUsuario = nombreUsuario;
+        this.passwordUsuario = passwordUsuario;
+        this.correo = correo;
+        this.rolUsuario = rolUsuario;
+        this.idUsuarioBiblioteca = idUsuarioBiblioteca;
+    }
     public Long getIdUsuario() {
         return idUsuario;
     }
