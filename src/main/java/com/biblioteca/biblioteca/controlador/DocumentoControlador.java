@@ -32,7 +32,7 @@ public class DocumentoControlador {
     @Operation(summary = "Obtener",description = "Retorna listado de documentos de tipo N(libro, tesis, articulo, etc)", responses ={
             @ApiResponse(responseCode = "200",description = "Operacion exitosa", content = @Content(schema = @Schema(implementation = Documento.class)))
     } )
-    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502"})
+    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502","https://biblioteca-unas.netlify.app"})
     @GetMapping("/todo")
     public List<Documento> obtenerTodoDocuento(){
         return docuemntoServicio.getTodoDocumento();
@@ -41,7 +41,7 @@ public class DocumentoControlador {
     @Operation(summary = "Documentos solicitados", description = "Retorna todas las solicitudes", responses = {
             @ApiResponse(responseCode = "200",description = "Operacion exitosa", content = @Content(schema = @Schema(implementation = SolicitudDocumentoDTO.class)))
     })
-    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502"})
+    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502","https://biblioteca-unas.netlify.app"})
     @GetMapping("/solicitudes")
     public List<SolicitudDocumentoDTO> getSolicituddes(){
         return solicitudDocumentoServicio.getSolicitudes();
@@ -50,7 +50,7 @@ public class DocumentoControlador {
     @Operation(summary = "Solicitar", description = "Solicitar un documento N en la biblioteca ", responses = {
             @ApiResponse(responseCode = "201",description = "Solicitud realizado con exito", content = @Content(schema = @Schema(implementation = SolicitudDocumentoDTO.class)))
     })
-    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502"})
+    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502","https://biblioteca-unas.netlify.app"})
     @PostMapping("/reservar")
     public ResponseEntity<String> reservarDocumento(@RequestBody SolicitudDocumentoDTO solicitudDocumentoDTO){
         System.out.println("entrada -> " + solicitudDocumentoDTO.toString());
@@ -67,7 +67,7 @@ public class DocumentoControlador {
             @ApiResponse(responseCode = "404", description = "Documento no encontrado"),
             @ApiResponse(responseCode = "400", description = "Solicitud de actualización inválida")
     })
-    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502"})
+    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502","https://biblioteca-unas.netlify.app"})
     @PatchMapping("/{idDocumentoPedido}/set-estado")
     public ResponseEntity<String> aceptacionSolicitudDocumento (@PathVariable Long idDocumentoPedido, @RequestBody EstadoRequest estadoRequest){
         Optional<SolicitudDocumentoDTO> documentoPedido = solicitudDocumentoServicio.busquedaSolicitudPorID(idDocumentoPedido);
@@ -83,7 +83,7 @@ public class DocumentoControlador {
     @Operation(summary = "nuevo documento",description = "se agregara un nuevo docuemnto de cualquier tipo",responses = {
             @ApiResponse(responseCode = "200",description = "Operacion exitosa", content = @Content(schema = @Schema(implementation = Documento.class)))
     })
-    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502"})
+    @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502","https://biblioteca-unas.netlify.app"})
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarDocuemnto(@RequestBody Documento documento){
         try {
