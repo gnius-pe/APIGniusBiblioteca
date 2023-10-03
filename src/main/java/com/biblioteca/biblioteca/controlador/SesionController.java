@@ -57,13 +57,13 @@ public class SesionController {
             @ApiResponse(responseCode = "200", description = "Operacion exitosa", content = @Content( schema = @Schema(implementation = RegistroEstudiante.class)))
     })
     @CrossOrigin(origins = {"http://127.0.0.1:5500","http://127.0.0.1:5501","http://localhost:4200","http://127.0.0.1:5502","https://biblioteca-unas.netlify.app"})
-    @GetMapping("/valida")
-    public ResponseEntity<?> validarEstudiante(@PathVariable CredencialUsuario credencialUsuario){
-        System.out.println("codgo : " + credencialUsuario.toString());
-        if(!sesionServicio.validaUsuarioBiblioteca(credencialUsuario.getCodigo())){
+    @GetMapping("/valida/{codigo}")
+    public ResponseEntity<?> validarEstudiante(@PathVariable String codigo){
+        System.out.println("codgo : " + codigo);
+        if(!sesionServicio.validaUsuarioBiblioteca(codigo)){
             ConeccionAPIXML coneccionAPIXML = new ConeccionAPIXML();
-            if(coneccionAPIXML.existEstudianteUnas(credencialUsuario.getCodigo())){
-                Estudiante estudiante = coneccionAPIXML.obtenerAlumno(credencialUsuario.getCodigo());
+            if(coneccionAPIXML.existEstudianteUnas(codigo)){
+                Estudiante estudiante = coneccionAPIXML.obtenerAlumno(codigo);
                 RegistroEstudiante registroEstudiante = new RegistroEstudiante(
                         estudiante.getCodigo(),
                         estudiante.getNombre(),
