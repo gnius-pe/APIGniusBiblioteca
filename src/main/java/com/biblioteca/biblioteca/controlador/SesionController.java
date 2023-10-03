@@ -1,15 +1,18 @@
 package com.biblioteca.biblioteca.controlador;
 
+import com.biblioteca.biblioteca.modelo.DTO.estudianteUNAS.CredencialUsuario;
+import com.biblioteca.biblioteca.modelo.DTO.estudianteUNAS.Estudiante;
+import com.biblioteca.biblioteca.modelo.DTO.estudianteUNAS.RegistroEstudiante;
 import com.biblioteca.biblioteca.modelo.usuario.Usuario;
+import com.biblioteca.biblioteca.modelo.usuario.UsuarioBiblioteca;
 import com.biblioteca.biblioteca.servicio.SesionServicio;
+import com.biblioteca.biblioteca.utilidades.ConeccionAPIXML;
 import com.biblioteca.biblioteca.utilidades.ProblemaDetalle;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,4 +51,86 @@ public class SesionController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemaDetalle);
         }
     }
+
+
+    @Operation(summary = "Obtener usuario",description = "Obtienes un usuario que se encuentra en el sistema", responses = {
+            @ApiResponse(responseCode = "200", description = "Operacion exitosa", content = @Content( schema = @Schema(implementation = RegistroEstudiante.class)))
+    })
+    @GetMapping("/valida")
+    public ResponseEntity<?> validarEstudiante(@RequestBody CredencialUsuario credencialUsuario){
+        System.out.println("codgo : " + credencialUsuario.toString());
+        if(!sesionServicio.validaUsuarioBiblioteca(credencialUsuario.getCodigo())){
+            ConeccionAPIXML coneccionAPIXML = new ConeccionAPIXML();
+            if(coneccionAPIXML.existEstudianteUnas(credencialUsuario.getCodigo())){
+                Estudiante estudiante = coneccionAPIXML.obtenerAlumno(credencialUsuario.getCodigo());
+                RegistroEstudiante registroEstudiante = new RegistroEstudiante(
+                        estudiante.getCodigo(),
+                        estudiante.getNombre(),
+                        estudiante.getApellidoPaterno(),
+                        estudiante.getApellidoMaterno(),
+                        "",
+                        estudiante.getEmail()
+                );
+                return ResponseEntity.ok(registroEstudiante);
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                        new ProblemaDetalle(
+                                HttpStatus.NOT_FOUND.value(),
+                                "El usuario no encontrado",
+                                "El usuario no forma parte de la organizacion"
+                        )
+                );
+            }
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ProblemaDetalle(
+                            HttpStatus.NOT_FOUND.value(),
+                            "Usuario ya existe",
+                            "El usuario ya se encuentra resitrado en la base de datos de la biblioteca"
+                    )
+            );
+        }
+    }
+
+    @Operation(summary = "Registra",description = "Agregar al nuevo usuario", responses = {
+            @ApiResponse(responseCode = "200", description = "Operacion exitosa", content = @Content( schema = @Schema(implementation = RegistroEstudiante.class)))
+    })
+    @PostMapping("/registra")
+    public ResponseEntity<?> guardarEstudiante(@RequestBody RegistroEstudiante registroEstudiante){
+        try {
+            ConeccionAPIXML coneccionAPIXML = new ConeccionAPIXML();
+            Estudiante estudiante = coneccionAPIXML.obtenerAlumno(registroEstudiante.getCodigo());
+            UsuarioBiblioteca usuarioBiblioteca = sesionServicio.guardarDetallesUsuario(
+                    new UsuarioBiblioteca(
+                            estudiante.getNombre(),
+                            estudiante.getApellidoPaterno(),
+                            estudiante.getApellidoMaterno(),
+                            "",
+                            estudiante.getCodigo(),
+                            "",
+                            estudiante.getUrlFoto(),
+                            ""
+                    ));
+
+            sesionServicio.guardarUsuario(
+                    new Usuario(
+                            estudiante.getNombre() + estudiante.getCodigo(),
+                            registroEstudiante.getPassword(),
+                            estudiante.getEmail(),
+                            "estudiante",
+                            usuarioBiblioteca.getIdUsuarioBiblioteca().intValue()
+                    ));
+
+            return ResponseEntity.ok("Registro completado exitosamente");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ProblemaDetalle(
+                            HttpStatus.NOT_FOUND.value(),
+                            "Error con los datos ingresados",
+                            "Verifica que los tados esten correctamente"
+                    )
+            );
+        }
+    }
+
 }

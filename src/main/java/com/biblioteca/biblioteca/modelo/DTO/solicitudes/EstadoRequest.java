@@ -1,4 +1,4 @@
-package com.biblioteca.biblioteca.modelo.DTO.tramite;
+package com.biblioteca.biblioteca.modelo.DTO.solicitudes;
 
 public class EstadoRequest {
     private String estado;
